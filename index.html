@@ -1,767 +1,646 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>JM Elétrica e Construções</title>
-
-  <meta name="description" content="JM Elétrica e Construções — serviços elétricos, reformas e construção. Solicite um orçamento.">
-
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      background: #f5f5f5;
-      color: #171717;
-      line-height: 1.6;
-    }
-
-    header {
-      background: #111;
-      color: white;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      border-bottom: 3px solid #e00000;
-    }
-
-    .nav {
-      max-width: 1200px;
-      margin: auto;
-      padding: 15px 25px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-    }
-
-    .logo-area {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .logo-area img {
-      width: 55px;
-      height: 55px;
-      object-fit: contain;
-      border-radius: 50%;
-      background: white;
-    }
-
-    .logo-text {
-      font-size: 19px;
-      font-weight: bold;
-    }
-
-    .logo-text span {
-      color: #e00000;
-    }
-
-    nav {
-      display: flex;
-      gap: 22px;
-    }
-
-    nav a {
-      color: white;
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: bold;
-    }
-
-    nav a:hover {
-      color: #ffd400;
-    }
-
-    .hero {
-      min-height: 680px;
-      display: flex;
-      align-items: center;
-      background:
-        linear-gradient(rgba(0,0,0,.78), rgba(0,0,0,.78)),
-        linear-gradient(135deg, #111, #333);
-      color: white;
-    }
-
-    .hero-content {
-      width: min(1200px, 90%);
-      margin: auto;
-      padding: 80px 0;
-    }
-
-    .hero small {
-      color: #ffd400;
-      font-weight: bold;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
-
-    .hero h1 {
-      font-size: clamp(42px, 7vw, 76px);
-      line-height: 1.05;
-      max-width: 850px;
-      margin: 18px 0;
-    }
-
-    .hero h1 span {
-      color: #e00000;
-    }
-
-    .hero p {
-      max-width: 650px;
-      font-size: 19px;
-      color: #ddd;
-      margin-bottom: 30px;
-    }
-
-    .buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-    }
-
-    .btn {
-      display: inline-block;
-      padding: 14px 24px;
-      border-radius: 5px;
-      text-decoration: none;
-      font-weight: bold;
-      transition: .2s;
-    }
-
-    .btn-red {
-      background: #e00000;
-      color: white;
-    }
-
-    .btn-red:hover {
-      background: #b80000;
-      transform: translateY(-2px);
-    }
-
-    .btn-outline {
-      border: 1px solid white;
-      color: white;
-    }
-
-    .btn-outline:hover {
-      background: white;
-      color: #111;
-    }
-
-    section {
-      padding: 85px 20px;
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: auto;
-    }
-
-    .section-title {
-      margin-bottom: 45px;
-    }
-
-    .section-title small {
-      color: #e00000;
-      font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-    }
-
-    .section-title h2 {
-      font-size: 42px;
-      margin-top: 8px;
-    }
-
-    .section-title p {
-      max-width: 650px;
-      color: #666;
-      margin-top: 10px;
-    }
-
-    .services {
-      background: white;
-    }
-
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 22px;
-    }
-
-    .card {
-      background: #fafafa;
-      border: 1px solid #e5e5e5;
-      padding: 30px;
-      border-radius: 8px;
-      transition: .2s;
-    }
-
-    .card:hover {
-      transform: translateY(-5px);
-      border-color: #e00000;
-      box-shadow: 0 10px 30px rgba(0,0,0,.08);
-    }
-
-    .card-number {
-      font-size: 14px;
-      color: #e00000;
-      font-weight: bold;
-    }
-
-    .card h3 {
-      font-size: 22px;
-      margin: 12px 0;
-    }
-
-    .card p {
-      color: #666;
-    }
-
-    .about {
-      background: #111;
-      color: white;
-    }
-
-    .about-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 60px;
-      align-items: center;
-    }
-
-    .about h2 {
-      font-size: 42px;
-      margin: 10px 0 20px;
-    }
-
-    .about p {
-      color: #ccc;
-      margin-bottom: 15px;
-    }
-
-    .highlight {
-      border-left: 4px solid #ffd400;
-      padding-left: 20px;
-      margin-top: 25px;
-    }
-
-    .portfolio {
-      background: #f5f5f5;
-    }
-
-    .portfolio-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-    }
-
-    .project {
-      min-height: 250px;
-      background: #ddd;
-      border-radius: 8px;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .project img {
-      width: 100%;
-      height: 100%;
-      min-height: 250px;
-      object-fit: cover;
-      display: block;
-    }
-
-    .project-placeholder {
-      height: 100%;
-      min-height: 250px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 30px;
-      color: #666;
-      font-weight: bold;
-    }
-
-    .youtube {
-      background: white;
-    }
-
-    .youtube-box {
-      background: #111;
-      color: white;
-      border-radius: 10px;
-      padding: 45px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 30px;
-    }
-
-    .youtube-box h3 {
-      font-size: 28px;
-      margin-bottom: 10px;
-    }
-
-    .youtube-box p {
-      color: #ccc;
-    }
-
-    .contact {
-      background: #e00000;
-      color: white;
-    }
-
-    .contact-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 50px;
-      align-items: center;
-    }
-
-    .contact h2 {
-      font-size: 45px;
-      line-height: 1.1;
-      margin-bottom: 20px;
-    }
-
-    .contact p {
-      color: #ffeaea;
-    }
-
-    .contact-box {
-      background: white;
-      color: #111;
-      padding: 35px;
-      border-radius: 10px;
-    }
-
-    .contact-box h3 {
-      margin-bottom: 15px;
-    }
-
-    .contact-box a {
-      display: block;
-      margin-top: 12px;
-      color: #e00000;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    footer {
-      background: #080808;
-      color: #aaa;
-      text-align: center;
-      padding: 30px 20px;
-      font-size: 14px;
-    }
-
-    footer strong {
-      color: white;
-    }
-
-    @media (max-width: 850px) {
-      nav {
-        display: none;
-      }
-
-      .cards,
-      .portfolio-grid,
-      .about-grid,
-      .contact-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .hero {
-        min-height: 600px;
-      }
-
-      .youtube-box {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .section-title h2,
-      .about h2,
-      .contact h2 {
-        font-size: 34px;
-      }
-    }
-
-    @media (max-width: 500px) {
-      .nav {
-        padding: 12px 15px;
-      }
-
-      .logo-text {
-        font-size: 15px;
-      }
-
-      .hero-content {
-        width: 92%;
-      }
-
-      .hero h1 {
-        font-size: 43px;
-      }
-
-      section {
-        padding: 65px 15px;
-      }
-
-      .card {
-        padding: 24px;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>JM Elétrica e Construção</title>
+
+    <meta name="description" content="JM Elétrica e Construção - Serviços elétricos, manutenção e construção com qualidade e profissionalismo.">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f7f7f7;
+            color: #222;
+            line-height: 1.6;
+        }
+
+        /* CABEÇALHO */
+
+        header {
+            background: #111;
+            color: white;
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 3px solid #e30613;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: #e30613;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: #e30613;
+        }
+
+        /* CAPA */
+
+        .hero {
+            min-height: 82vh;
+            display: flex;
+            align-items: center;
+            padding: 70px 7%;
+            background:
+                linear-gradient(rgba(0,0,0,0.78), rgba(0,0,0,0.78)),
+                linear-gradient(135deg, #151515, #292929);
+            color: white;
+        }
+
+        .hero-content {
+            max-width: 760px;
+        }
+
+        .hero h1 {
+            font-size: clamp(38px, 6vw, 68px);
+            line-height: 1.05;
+            margin-bottom: 25px;
+        }
+
+        .hero h1 span {
+            color: #e30613;
+        }
+
+        .hero p {
+            font-size: 20px;
+            color: #ddd;
+            margin-bottom: 35px;
+            max-width: 650px;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #e30613;
+            color: white;
+            padding: 15px 28px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #b9000b;
+            transform: translateY(-2px);
+        }
+
+        /* SEÇÕES */
+
+        section {
+            padding: 80px 7%;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            font-size: 38px;
+            margin-bottom: 10px;
+        }
+
+        .section-title p {
+            color: #666;
+        }
+
+        /* SOBRE */
+
+        .about {
+            background: white;
+        }
+
+        .about-content {
+            max-width: 900px;
+            margin: auto;
+            text-align: center;
+        }
+
+        .about-content p {
+            font-size: 18px;
+            color: #555;
+        }
+
+        /* SERVIÇOS */
+
+        .services {
+            background: #f2f2f2;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .service-card {
+            background: white;
+            padding: 35px 25px;
+            border-radius: 8px;
+            border-top: 4px solid #e30613;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+            transition: 0.3s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .service-card h3 {
+            margin-bottom: 12px;
+            font-size: 21px;
+        }
+
+        .service-card p {
+            color: #666;
+        }
+
+        /* PORTFÓLIO */
+
+        .portfolio {
+            background: white;
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .portfolio-card {
+            background: #111;
+            min-height: 220px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .portfolio-card h3 {
+            font-size: 20px;
+        }
+
+        /* DIFERENCIAIS */
+
+        .advantages {
+            background: #111;
+            color: white;
+        }
+
+        .advantages .section-title p {
+            color: #bbb;
+        }
+
+        .advantages-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .advantage {
+            text-align: center;
+            padding: 25px;
+        }
+
+        .advantage h3 {
+            margin: 15px 0 10px;
+        }
+
+        .advantage p {
+            color: #bbb;
+        }
+
+        .number {
+            font-size: 35px;
+            font-weight: bold;
+            color: #e30613;
+        }
+
+        /* CONTATO */
+
+        .contact {
+            background: #f2f2f2;
+            text-align: center;
+        }
+
+        .contact-box {
+            max-width: 700px;
+            margin: auto;
+        }
+
+        .contact-box p {
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 25px;
+        }
+
+        /* RODAPÉ */
+
+        footer {
+            background: #090909;
+            color: #aaa;
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        footer strong {
+            color: white;
+        }
+
+        /* WHATSAPP */
+
+        .whatsapp {
+            position: fixed;
+            right: 22px;
+            bottom: 22px;
+            width: 58px;
+            height: 58px;
+            background: #25D366;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 25px;
+            text-decoration: none;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.25);
+            z-index: 999;
+        }
+
+        /* CELULAR */
+
+        @media (max-width: 800px) {
+
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav a {
+                margin: 0 7px;
+                font-size: 13px;
+            }
+
+            .services-grid,
+            .portfolio-grid,
+            .advantages-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+                min-height: 75vh;
+            }
+
+            .hero p {
+                font-size: 17px;
+            }
+
+            section {
+                padding: 60px 6%;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-  <header>
-    <div class="nav">
+<header>
 
-      <div class="logo-area">
-        <!-- Depois vamos colocar a logo real aqui -->
-        <div style="width:55px;height:55px;border-radius:50%;background:#e00000;display:flex;align-items:center;justify-content:center;font-weight:bold;color:#111;">
-          JM
-        </div>
+    <div class="logo">
+        JM <span>Elétrica e Construção</span>
+    </div>
 
-        <div class="logo-text">
-          JM Elétrica <span>e Construções</span>
-        </div>
-      </div>
-
-      <nav>
+    <nav>
         <a href="#inicio">Início</a>
+        <a href="#sobre">Sobre</a>
         <a href="#servicos">Serviços</a>
         <a href="#portfolio">Portfólio</a>
-        <a href="#sobre">Sobre</a>
         <a href="#contato">Contato</a>
-      </nav>
+    </nav>
 
-    </div>
-  </header>
+</header>
 
 
-  <main>
+<!-- INÍCIO -->
 
-    <!-- INÍCIO -->
-    <section class="hero" id="inicio">
+<section class="hero" id="inicio">
 
-      <div class="hero-content">
-
-        <small>JM Elétrica e Construções</small>
+    <div class="hero-content">
 
         <h1>
-          Seu projeto começa com um serviço
-          <span>bem feito.</span>
+            Soluções em<br>
+            <span>Elétrica e Construção</span>
         </h1>
 
         <p>
-          Serviços elétricos, construção e reformas com atenção aos detalhes,
-          compromisso e profissionalismo.
+            Serviços realizados com responsabilidade,
+            qualidade e atenção aos detalhes.
         </p>
 
-        <div class="buttons">
-          <a href="#contato" class="btn btn-red">
+        <a href="#contato" class="btn">
             Solicitar orçamento
-          </a>
+        </a>
 
-          <a href="#portfolio" class="btn btn-outline">
-            Conheça nossos trabalhos
-          </a>
+    </div>
+
+</section>
+
+
+<!-- SOBRE -->
+
+<section class="about" id="sobre">
+
+    <div class="section-title">
+
+        <h2>Sobre a JM</h2>
+
+        <p>Experiência, responsabilidade e compromisso.</p>
+
+    </div>
+
+    <div class="about-content">
+
+        <p>
+            A <strong>JM Elétrica e Construção</strong> atua na área
+            de serviços elétricos, manutenção e construção,
+            buscando oferecer soluções de qualidade para cada cliente.
+        </p>
+
+        <br>
+
+        <p>
+            Nosso trabalho é realizado com atenção, organização
+            e compromisso com o resultado final.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- SERVIÇOS -->
+
+<section class="services" id="servicos">
+
+    <div class="section-title">
+
+        <h2>Nossos Serviços</h2>
+
+        <p>Algumas das soluções oferecidas pela JM Elétrica e Construção.</p>
+
+    </div>
+
+
+    <div class="services-grid">
+
+        <div class="service-card">
+
+            <h3>⚡ Instalações Elétricas</h3>
+
+            <p>
+                Instalações e adequações elétricas
+                para diferentes necessidades.
+            </p>
+
         </div>
 
-      </div>
 
-    </section>
+        <div class="service-card">
+
+            <h3>🔧 Manutenção</h3>
+
+            <p>
+                Serviços de manutenção e correção
+                em instalações e equipamentos.
+            </p>
+
+        </div>
 
 
-    <!-- SERVIÇOS -->
-    <section class="services" id="servicos">
+        <div class="service-card">
 
-      <div class="container">
+            <h3>🏗️ Construção</h3>
+
+            <p>
+                Serviços relacionados à construção,
+                reformas e melhorias.
+            </p>
+
+        </div>
+
+
+        <div class="service-card">
+
+            <h3>💡 Iluminação</h3>
+
+            <p>
+                Instalação e adequação de sistemas
+                de iluminação.
+            </p>
+
+        </div>
+
+
+        <div class="service-card">
+
+            <h3>🏠 Reformas</h3>
+
+            <p>
+                Soluções para reformas e melhorias
+                em ambientes residenciais e comerciais.
+            </p>
+
+        </div>
+
+
+        <div class="service-card">
+
+            <h3>🛠️ Serviços Personalizados</h3>
+
+            <p>
+                Entre em contato para verificar
+                a solução ideal para seu projeto.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- PORTFÓLIO -->
+
+<section class="portfolio" id="portfolio">
+
+    <div class="section-title">
+
+        <h2>Nosso Portfólio</h2>
+
+        <p>Veja alguns dos trabalhos realizados pela JM.</p>
+
+    </div>
+
+
+    <div class="portfolio-grid">
+
+        <div class="portfolio-card">
+            <h3>Projeto elétrico</h3>
+        </div>
+
+        <div class="portfolio-card">
+            <h3>Instalação</h3>
+        </div>
+
+        <div class="portfolio-card">
+            <h3>Reforma</h3>
+        </div>
+
+    </div>
+
+    <br>
+
+    <div style="text-align:center; color:#666;">
+        Em breve adicionaremos fotos dos trabalhos realizados.
+    </div>
+
+</section>
+
+
+<!-- DIFERENCIAIS -->
+
+<section class="advantages">
+
+    <div class="section-title">
+
+        <h2>Por que escolher a JM?</h2>
+
+        <p>Nosso compromisso vai além de realizar o serviço.</p>
+
+    </div>
+
+
+    <div class="advantages-grid">
+
+        <div class="advantage">
+
+            <div class="number">01</div>
+
+            <h3>Responsabilidade</h3>
+
+            <p>
+                Compromisso com cada serviço realizado.
+            </p>
+
+        </div>
+
+
+        <div class="advantage">
+
+            <div class="number">02</div>
+
+            <h3>Qualidade</h3>
+
+            <p>
+                Atenção aos detalhes e ao resultado final.
+            </p>
+
+        </div>
+
+
+        <div class="advantage">
+
+            <div class="number">03</div>
+
+            <h3>Experiência</h3>
+
+            <p>
+                Conhecimento para encontrar soluções adequadas.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- CONTATO -->
+
+<section class="contact" id="contato">
+
+    <div class="contact-box">
 
         <div class="section-title">
-          <small>O que fazemos</small>
-          <h2>Nossos serviços</h2>
-          <p>
-            Soluções para diferentes necessidades elétricas,
-            de construção e reforma.
-          </p>
-        </div>
 
-        <div class="cards">
+            <h2>Vamos conversar?</h2>
 
-          <div class="card">
-            <div class="card-number">01</div>
-            <h3>Instalações elétricas</h3>
             <p>
-              Serviços relacionados a instalações e adequações elétricas.
+                Entre em contato com a JM Elétrica e Construção
+                para solicitar informações ou um orçamento.
             </p>
-          </div>
-
-          <div class="card">
-            <div class="card-number">02</div>
-            <h3>Reformas</h3>
-            <p>
-              Serviços para transformar e melhorar ambientes residenciais
-              e comerciais.
-            </p>
-          </div>
-
-          <div class="card">
-            <div class="card-number">03</div>
-            <h3>Construção</h3>
-            <p>
-              Serviços de construção e soluções para diferentes projetos.
-            </p>
-          </div>
-
-          <div class="card">
-            <div class="card-number">04</div>
-            <h3>Manutenção</h3>
-            <p>
-              Manutenção e melhorias para instalações e estruturas.
-            </p>
-          </div>
-
-          <div class="card">
-            <div class="card-number">05</div>
-            <h3>Projetos personalizados</h3>
-            <p>
-              Soluções avaliadas de acordo com a necessidade de cada cliente.
-            </p>
-          </div>
-
-          <div class="card">
-            <div class="card-number">06</div>
-            <h3>Orçamentos</h3>
-            <p>
-              Entre em contato para explicar sua necessidade e solicitar
-              uma avaliação.
-            </p>
-          </div>
 
         </div>
 
-      </div>
 
-    </section>
+        <!-- COLOCAREMOS O WHATSAPP AQUI DEPOIS -->
 
+        <a href="#" class="btn">
+            Entrar em contato
+        </a>
 
-    <!-- SOBRE -->
-    <section class="about" id="sobre">
+    </div>
 
-      <div class="container">
-
-        <div class="about-grid">
-
-          <div>
-            <small style="color:#ffd400;font-weight:bold;letter-spacing:2px;">
-              SOBRE A EMPRESA
-            </small>
-
-            <h2>
-              Experiência que aparece no resultado.
-            </h2>
-
-            <p>
-              A JM Elétrica e Construções trabalha com serviços elétricos,
-              construção e reformas, buscando entregar um trabalho
-              cuidadoso e profissional.
-            </p>
-
-            <p>
-              Cada serviço é tratado de acordo com as necessidades
-              específicas do cliente.
-            </p>
-
-            <div class="highlight">
-              <strong>
-                Compromisso, cuidado e qualidade em cada trabalho.
-              </strong>
-            </div>
-          </div>
-
-          <div>
-            <div style="background:#222;border-radius:10px;padding:50px;text-align:center;">
-              <div style="font-size:65px;font-weight:bold;color:#e00000;">
-                JM
-              </div>
-              <p style="color:#aaa;">
-                Elétrica e Construções
-              </p>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
+</section>
 
 
-    <!-- PORTFÓLIO -->
-    <section class="portfolio" id="portfolio">
+<!-- RODAPÉ -->
 
-      <div class="container">
-
-        <div class="section-title">
-          <small>Trabalhos realizados</small>
-          <h2>Nosso portfólio</h2>
-          <p>
-            Alguns dos trabalhos realizados pela JM Elétrica e Construções.
-          </p>
-        </div>
-
-        <div class="portfolio-grid">
-
-          <div class="project">
-            <div class="project-placeholder">
-              FOTO DO SERVIÇO 01
-            </div>
-          </div>
-
-          <div class="project">
-            <div class="project-placeholder">
-              FOTO DO SERVIÇO 02
-            </div>
-          </div>
-
-          <div class="project">
-            <div class="project-placeholder">
-              FOTO DO SERVIÇO 03
-            </div>
-          </div>
-
-          <div class="project">
-            <div class="project-placeholder">
-              FOTO DO SERVIÇO 04
-            </div>
-          </div>
-
-          <div class="project">
-            <div class="project-placeholder">
-              FOTO DO SERVIÇO 05
-            </div>
-          </div>
-
-          <div class="project">
-            <div class="project-placeholder">
-              FOTO DO SERVIÇO 06
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- YOUTUBE -->
-    <section class="youtube">
-
-      <div class="container">
-
-        <div class="youtube-box">
-
-          <div>
-            <h3>Conheça nosso trabalho</h3>
-
-            <p>
-              Veja alguns dos trabalhos e conteúdos da
-              JM Elétrica e Construções no YouTube.
-            </p>
-          </div>
-
-          <a
-            href="https://www.youtube.com/@mike79645"
-            target="_blank"
-            class="btn btn-red">
-            Visitar YouTube
-          </a>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- CONTATO -->
-    <section class="contact" id="contato">
-
-      <div class="container">
-
-        <div class="contact-grid">
-
-          <div>
-
-            <small style="color:#ffd400;font-weight:bold;letter-spacing:2px;">
-              FALE CONOSCO
-            </small>
-
-            <h2>
-              Vamos conversar sobre seu projeto?
-            </h2>
-
-            <p>
-              Entre em contato com a JM Elétrica e Construções
-              para explicar o que você precisa.
-            </p>
-
-          </div>
-
-          <div class="contact-box">
-
-            <h3>Solicite um orçamento</h3>
-
-            <p>
-              Fale conosco através dos nossos canais de atendimento.
-            </p>
-
-            <!-- Depois vamos colocar o WhatsApp verdadeiro -->
-            <a href="#" onclick="alert('Em breve adicionaremos o WhatsApp da empresa.'); return false;">
-              WhatsApp
-            </a>
-
-            <!-- Depois vamos colocar o Instagram verdadeiro -->
-            <a href="#" onclick="alert('Em breve adicionaremos o Instagram da empresa.'); return false;">
-              Instagram
-            </a>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-  </main>
-
-
-  <footer>
+<footer>
 
     <p>
-      © 2026 <strong>JM Elétrica e Construções</strong>.
-      Todos os direitos reservados.
+        © 2026 <strong>JM Elétrica e Construção</strong>.
+        Todos os direitos reservados.
     </p>
 
-  </footer>
+    <p>
+        Desenvolvido para apresentação da empresa.
+    </p>
+
+</footer>
 
 </body>
 </html>
