@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>JM Orçamentos</title>
+<style>
+:root{--navy:#071b36;--blue:#0d3b73;--yellow:#f5bd16;--red:#e3262e;--bg:#f5f7fa;--text:#17202a;--muted:#718096;--white:#fff;--line:#e1e7ef}*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#071b36 0 180px,var(--bg) 180px);font-family:Inter,Arial,sans-serif;color:var(--text)}button,input{font:inherit}.app{width:min(430px,100%);min-height:100vh;margin:auto;background:var(--bg);overflow:hidden;box-shadow:0 0 35px #0002}.top{background:var(--navy);color:#fff;padding:18px 18px 20px}.topbar{display:flex;align-items:center;justify-content:space-between}.brand{display:flex;align-items:center;gap:10px}.brand img{width:48px;height:48px;object-fit:contain}.brand b{display:block;font-size:15px}.brand span{display:block;color:#ffd85c;font-size:12px;font-weight:800}.close{border:1px solid #ffffff44;background:transparent;color:#fff;border-radius:10px;padding:8px 12px}.progress{margin-top:16px}.progress-line{height:7px;background:#ffffff25;border-radius:10px;overflow:hidden}.progress-fill{height:100%;background:var(--yellow);width:38%;border-radius:10px}.progress-row{display:flex;justify-content:space-between;color:#c8d3e0;font-size:11px;margin-top:6px}.chat{padding:18px 14px 110px}.msg{display:flex;gap:9px;margin:13px 0}.bot{align-items:flex-start}.avatar{width:34px;height:34px;border-radius:50%;background:var(--yellow);display:grid;place-items:center;flex:0 0 34px;font-size:17px}.bubble{background:#fff;border:1px solid var(--line);border-radius:16px 16px 16px 5px;padding:12px 14px;max-width:84%;box-shadow:0 2px 8px #13233b0b}.bubble small{display:block;color:#a0a9b3;margin-top:5px;font-size:9px}.user{justify-content:flex-end}.user .bubble{background:var(--blue);color:#fff;border-radius:16px 16px 5px 16px}.choices{display:grid;gap:9px;margin:8px 0 16px 43px}.choice{background:#fff;border:1px solid var(--line);border-radius:13px;padding:13px 12px;text-align:left;color:var(--blue);font-weight:800;box-shadow:0 2px 8px #13233b08}.choice:hover,.choice.selected{border-color:var(--yellow);box-shadow:0 0 0 2px #f5bd1633}.photo-box{margin:8px 0 14px 43px;background:#fff;border:1.5px dashed #9bb3d0;border-radius:14px;padding:16px;text-align:center}.photo-box button{border:0;background:transparent;color:var(--blue);font-weight:900}.photos{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.thumb{width:66px;height:66px;border-radius:9px;object-fit:cover;border:1px solid var(--line)}.inputbar{position:fixed;bottom:0;width:min(430px,100%);padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:#fffffff2;border-top:1px solid var(--line);display:flex;gap:8px}.inputbar input{flex:1;border:1px solid #d6dee8;border-radius:13px;padding:12px 13px;outline:0}.send{width:46px;border:0;border-radius:13px;background:var(--blue);color:#fff;font-weight:900}.bottom-actions{display:flex;gap:8px;margin:12px 0 0 43px}.bottom-actions button{flex:1;padding:11px 8px;border-radius:11px;background:#fff;border:1px solid var(--line);color:var(--blue);font-weight:800}.bottom-actions .red{background:var(--red);color:#fff;border-color:var(--red)}.summary{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;margin:15px 0;box-shadow:0 3px 14px #13233b10}.summary h3{margin:0 0 12px}.row{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid #edf0f4;font-size:13px}.row:last-child{border-bottom:0}.row span{color:var(--muted)}.row b{text-align:right}.success{background:#eaf8ee;color:#176b35;border:1px solid #bfe6cb;padding:12px;border-radius:12px;font-weight:800;font-size:13px}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="top">
+ <div class="topbar"><div class="brand"><img src="../jm.png" alt="JM Elétrica e Construções"><div><b>Novo orçamento</b><span>JM Elétrica e Construções</span></div></div><button class="close" onclick="resetApp()">Sair</button></div>
+ <div class="progress"><div class="progress-line"><div id="fill" class="progress-fill"></div></div><div class="progress-row"><span id="serviceLabel">Escolha o serviço</span><span id="stepLabel">Etapa 1 de 8</span></div></div>
+</header>
+<main id="chat" class="chat"></main>
+<div class="inputbar"><input id="textInput" placeholder="Digite sua mensagem..." autocomplete="off"><button class="send" onclick="sendText()">➤</button></div>
+</div>
+<script>
+const state={service:'',answers:{},photos:[],step:0};
+const flows={
+ 'Pintura':[
+  ['O que você quer pintar?',['Uma parede','Um cômodo','A casa toda'],'alvo'],
+  ['Mais ou menos, qual é o tamanho do local?',['Pequeno — até 20 m²','Médio — 20 a 50 m²','Grande — mais de 50 m²'],'tamanho'],
+  ['Como estão as paredes hoje?',['Boas, só pintar','Alguns problemas','Bem danificadas'],'estado'],
+  ['Quando você gostaria de fazer o serviço?',['O mais rápido possível','Nesta semana','Na próxima semana'],'prazo']
+ ],
+ 'Elétrica':[
+  ['O que você precisa fazer?',['Instalar algo novo','Consertar algo','Fazer manutenção'],'tipo'],
+  ['O que você quer instalar ou consertar?',['Tomadas','Iluminação','Chuveiro'],'subtipo'],
+  ['Onde será o serviço?',['Dentro de casa','Fora de casa','Outro local'],'local'],
+  ['Mais ou menos quantos pontos você precisa?',['1 a 3','4 a 10','Mais de 10'],'quantidade'],
+  ['Quando você gostaria de fazer o serviço?',['O mais rápido possível','Nesta semana','Na próxima semana'],'prazo']
+ ],
+ 'Construção':[
+  ['O que você pretende fazer?',['Construir','Ampliar','Reformar'],'tipo'],
+  ['É um serviço pequeno, médio ou grande?',['Pequeno','Médio','Grande'],'tamanho'],
+  ['O local já está preparado para o serviço?',['Sim','Mais ou menos','Não'],'preparo'],
+  ['Quando você gostaria de começar?',['O mais rápido possível','Nesta semana','Na próxima semana'],'prazo']
+ ],
+ 'Carregador de carro elétrico':[
+  ['Onde você quer instalar o carregador?',['Casa','Condomínio','Empresa'],'local'],
+  ['Você já tem um carregador?',['Sim','Ainda não','Não sei qual comprar'],'carregador'],
+  ['A vaga fica perto do quadro de energia?',['Sim','Mais ou menos','Não sei'],'distancia'],
+  ['Quando gostaria de fazer a instalação?',['O mais rápido possível','Nesta semana','Na próxima semana'],'prazo']
+ ],
+ 'Segurança':[
+  ['O que você quer instalar?',['Câmeras','Alarme','Outro item de segurança'],'item'],
+  ['É para qual local?',['Casa','Empresa','Outro local'],'local'],
+  ['Mais ou menos quantos pontos?',['1 a 3','4 a 8','Mais de 8'],'quantidade'],
+  ['Quando gostaria de instalar?',['O mais rápido possível','Nesta semana','Na próxima semana'],'prazo']
+ ]
+};
+function addBot(text){const wrap=document.createElement('div');wrap.className='msg bot';wrap.innerHTML='<div class="avatar">🤖</div><div class="bubble">'+text+'<small>agora</small></div>';chat.appendChild(wrap);scroll();}
+function addUser(text){const wrap=document.createElement('div');wrap.className='msg user';wrap.innerHTML='<div class="bubble">'+text+'<small>agora</small></div>';chat.appendChild(wrap);scroll();}
+function choices(items,key){const box=document.createElement('div');box.className='choices';items.forEach(item=>{const b=document.createElement('button');b.className='choice';b.textContent=item;b.onclick=()=>{state.answers[key]=item;addUser(item);box.remove();next();};box.appendChild(b)});chat.appendChild(box);scroll();}
+function showService(){addBot('Olá! 👋<br>Vou fazer algumas perguntas simples para entender o que você precisa.');addBot('Qual serviço você precisa?');choices(['Elétrica','Construção','Pintura','Reforma','Segurança','Carregador de carro elétrico'],'service');}
+function next(){if(state.step===0){state.service=state.answers.service;document.getElementById('serviceLabel').textContent=state.service;state.step=1;}const flow=flows[state.service]||flows.Elétrica;if(state.step<=flow.length){const q=flow[state.step-1];addBot(q[0]);choices(q[1],q[2]);state.step++;updateProgress();}else{askPhotos();}}
+function askPhotos(){addBot('Quer adicionar fotos do local? Isso ajuda o profissional a entender melhor o serviço.');const box=document.createElement('div');box.className='photo-box';box.innerHTML='<button onclick="pickPhotos()">📷 Adicionar fotos</button><div style="font-size:11px;color:#718096;margin-top:5px">Você pode adicionar várias fotos</div><div id="photos" class="photos"></div>';chat.appendChild(box);const actions=document.createElement('div');actions.className='bottom-actions';actions.innerHTML='<button onclick="skipPhotos()">Pular</button><button class="red" onclick="finishPhotos()">Continuar</button>';chat.appendChild(actions);scroll();}
+function pickPhotos(){let input=document.createElement('input');input.type='file';input.accept='image/*';input.multiple=true;input.onchange=e=>{[...e.target.files].forEach(file=>{if(state.photos.length<15)state.photos.push(URL.createObjectURL(file));});renderPhotos();};input.click();}
+function renderPhotos(){const box=document.getElementById('photos');if(!box)return;box.innerHTML='';state.photos.forEach((src,i)=>{const img=document.createElement('img');img.className='thumb';img.src=src;img.title='Foto '+(i+1);box.appendChild(img)});}
+function skipPhotos(){finishPhotos();}
+function finishPhotos(){document.querySelectorAll('.photo-box,.bottom-actions').forEach(x=>x.remove());addBot('Perfeito! Já tenho informações suficientes para montar sua solicitação.');showSummary();}
+function showSummary(){const s=document.createElement('div');s.className='summary';let rows='<h3>📋 Resumo do pedido</h3><div class="row"><span>Serviço</span><b>'+state.service+'</b></div>';Object.entries(state.answers).filter(([k])=>k!=='service').forEach(([k,v])=>rows+='<div class="row"><span>'+label(k)+'</span><b>'+v+'</b></div>');rows+='<div class="row"><span>Fotos</span><b>'+state.photos.length+' adicionada(s)</b></div>';rows+='<div class="row"><span>Orçamento</span><b>1ª solicitação gratuita</b></div>';s.innerHTML=rows+'<div class="bottom-actions" style="margin:12px 0 0"><button onclick="location.reload()">✏️ Corrigir</button><button class="red" onclick="submitRequest()">Enviar solicitação</button></div>';chat.appendChild(s);document.getElementById('stepLabel').textContent='Concluído';document.getElementById('fill').style.width='100%';scroll();}
+function label(k){return ({alvo:'O que fazer',tamanho:'Tamanho',estado:'Estado do local',prazo:'Prazo',tipo:'Tipo de serviço',subtipo:'Serviço',local:'Local',quantidade:'Quantidade',preparo:'Local preparado',carregador:'Carregador',distancia:'Distância do quadro',item:'Item'})[k]||k;}
+function submitRequest(){const box=document.createElement('div');box.className='success';box.textContent='✅ Solicitação criada! Na próxima etapa vamos conectar esta solicitação aos profissionais disponíveis e à agenda.';chat.appendChild(box);scroll();}
+function sendText(){const input=document.getElementById('textInput');const value=input.value.trim();if(!value)return;addUser(value);input.value='';addBot('Entendi! Vou considerar essa informação na sua solicitação.');}
+function updateProgress(){const flow=flows[state.service]||flows.Elétrica;const pct=Math.min(92,15+(state.step/(flow.length+2))*75);document.getElementById('fill').style.width=pct+'%';document.getElementById('stepLabel').textContent='Etapa '+Math.min(state.step+1,8)+' de 8';}
+function scroll(){setTimeout(()=>window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'}),30)}
+function resetApp(){location.reload()}
+showService();
+</script>
+</body>
+</html>
