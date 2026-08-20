@@ -3,7 +3,7 @@ package br.com.jmeletrica.orcamentos
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
-import android.location.Location
+import android.location.LocationManager
 import android.os.Bundle
 import android.webkit.JavascriptInterface
 import android.webkit.WebChromeClient
@@ -13,7 +13,6 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import org.json.JSONObject
 
 class MainActivity : AppCompatActivity() {
     private lateinit var webView: WebView
@@ -75,15 +74,30 @@ class MainActivity : AppCompatActivity() {
 
         @JavascriptInterface
         fun requestLocation() {
-            runOnUiThread {
-                val fine = ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                val coarse = ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                if (!fine && !coarse) {
-                    ActivityCompat.requestPermissions(this@MainActivity, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION), locationRequestCode)
-                } else {
-                    webView.evaluateJavascript("window.onLocationPermissionResult && window.onLocationPermissionResult(true)", null)
-                }
+            val fine = ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+            val coarse = ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+            if (!fine && !coarse) {
+                ActivityCompat.requestPermissions(this@MainActivity, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION), locationRequestCode)
+                return
             }
+            sendLastKnownLocation()
+        }
+
+        @SuppressLint("MissingPermission")
+        private fun sendLastKnownLocation() {
+            val manager = getSystemService(LOCATION_SERVICE) as LocationManager
+            val provider = when {
+                manager.isProviderEnabled(LocationManager.GPS_PROVIDER) -> LocationManager.GPS_PROVIDER
+                manager.isProviderEnabled(LocationManager.NETWORK_PROVIDER) -> LocationManager.NETWORK_PROVIDER
+                else -> null
+            }
+            val location = provider?.let { manager.getLastKnownLocation(it) }
+            val js = if (location != null) {
+                "window.onNativeLocation && window.onNativeLocation(${location.latitude},${location.longitude});"
+            } else {
+                "window.onNativeLocationUnavailable && window.onNativeLocationUnavailable();"
+            }
+            runOnUiThread { webView.evaluateJavascript(js, null) }
         }
     }
 
@@ -91,7 +105,27 @@ class MainActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == locationRequestCode) {
             val granted = grantResults.any { it == PackageManager.PERMISSION_GRANTED }
-            webView.evaluateJavascript("window.onLocationPermissionResult && window.onLocationPermissionResult($granted)", null)
+            if (granted) {
+                sendLocationToWeb()
+            } else {
+                webView.evaluateJavascript("window.onLocationPermissionResult && window.onLocationPermissionResult(false)", null)
+            }
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun sendLocationToWeb() {
+        val manager = getSystemService(LOCATION_SERVICE) as LocationManager
+        val provider = when {
+            manager.isProviderEnabled(LocationManager.GPS_PROVIDER) -> LocationManager.GPS_PROVIDER
+            manager.isProviderEnabled(LocationManager.NETWORK_PROVIDER) -> LocationManager.NETWORK_PROVIDER
+            else -> null
+        }
+        val location = provider?.let { manager.getLastKnownLocation(it) }
+        if (location != null) {
+            webView.evaluateJavascript("window.onNativeLocation && window.onNativeLocation(${location.latitude},${location.longitude})", null)
+        } else {
+            webView.evaluateJavascript("window.onNativeLocationUnavailable && window.onNativeLocationUnavailable()", null)
         }
     }
 
@@ -101,6 +135,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
+        webView.removeJavascriptInterface("JMNative")
         webView.destroy()
         super.onDestroy()
     }
