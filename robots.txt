@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://johnycristiansan-oss.github.io/jm-eletrica-e-contrucoes/sitemap.xml
