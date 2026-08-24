@@ -1,4 +1,4 @@
-name: SEO local Curitiba
+name: SEO local Curitiba e região
 
 on:
   push:
@@ -20,22 +20,22 @@ jobs:
         shell: python
         run: |
           from pathlib import Path
-          import re
 
           p = Path("index.html")
           text = p.read_text(encoding="utf-8")
 
-          # Mantém a página única, mas fornece sinais claros de SEO local.
           replacements = {
-              '<title>JM Elétrica e Construções</title>': '<title>JM Elétrica e Construções | Eletricista e Reformas em Curitiba</title>',
-              '<meta name="description" content="JM Elétrica e Construções — serviços elétricos, reformas, manutenção, segurança e carregadores para veículos elétricos.">': '<meta name="description" content="JM Elétrica e Construções em Curitiba e região: serviços elétricos, manutenção, reformas, construção e instalação de carregadores para veículos elétricos.">',
+              '<title>JM Elétrica e Construções</title>': '<title>JM Elétrica e Construções | Eletricista e Reformas em Curitiba e Região</title>',
+              '<title>JM Elétrica e Construções | Eletricista e Reformas em Curitiba</title>': '<title>JM Elétrica e Construções | Eletricista e Reformas em Curitiba e Região</title>',
+              '<meta name="description" content="JM Elétrica e Construções — serviços elétricos, reformas, manutenção, segurança e carregadores para veículos elétricos.">': '<meta name="description" content="JM Elétrica e Construções: serviços elétricos, manutenção, reformas, construção e instalação de carregadores para veículos elétricos em Curitiba e cidades próximas.">',
+              '<meta name="description" content="JM Elétrica e Construções em Curitiba e região: serviços elétricos, manutenção, reformas, construção e instalação de carregadores para veículos elétricos.">': '<meta name="description" content="JM Elétrica e Construções: serviços elétricos, manutenção, reformas, construção e instalação de carregadores para veículos elétricos em Curitiba e cidades próximas.">',
           }
           for old, new in replacements.items():
               text = text.replace(old, new, 1)
 
           if 'id="local-seo"' not in text:
               marker = '<section id="sobre">'
-              seo_section = '''<section id="local-seo" aria-label="Atendimento em Curitiba e região"><div class="container"><div class="head"><div class="kicker">Atendimento regional</div><h2>Serviços em Curitiba e região</h2><p>A JM Elétrica e Construções atende Curitiba e cidades próximas, oferecendo serviços elétricos, manutenção, reformas e construção conforme a necessidade de cada projeto.</p></div><div class="note">Atendimento sujeito à disponibilidade e à área de deslocamento para cada serviço.</div></div></section>'''
+              seo_section = '''<section id="local-seo" aria-label="Atendimento em Curitiba e cidades próximas"><div class="container"><div class="head"><div class="kicker">Atendimento regional</div><h2>Curitiba e cidades próximas</h2><p>A JM Elétrica e Construções atende Curitiba e cidades próximas, conforme a disponibilidade e a área de deslocamento de cada serviço.</p></div><div class="note">Consulte a disponibilidade de atendimento para sua cidade.</div></div></section>'''
               if marker in text:
                   text = text.replace(marker, seo_section + marker, 1)
 
@@ -48,7 +48,7 @@ jobs:
   "name": "JM Elétrica e Construções",
   "url": "https://johnycristiansan-oss.github.io/jm-eletrica-e-contrucoes/",
   "logo": "https://johnycristiansan-oss.github.io/jm-eletrica-e-contrucoes/jm.png?v=2",
-  "description": "Serviços elétricos, manutenção, reformas, construção e instalação de carregadores para veículos elétricos em Curitiba e região.",
+  "description": "Serviços elétricos, manutenção, reformas, construção e instalação de carregadores para veículos elétricos.",
   "areaServed": [
     {"@type":"City","name":"Curitiba","addressCountry":"BR"},
     {"@type":"AdministrativeArea","name":"Região Metropolitana de Curitiba","addressCountry":"BR"}
@@ -74,5 +74,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
-          git commit -m "Otimiza SEO local para Curitiba e região"
+          git commit -m "Otimiza SEO para Curitiba e cidades próximas"
           git push
