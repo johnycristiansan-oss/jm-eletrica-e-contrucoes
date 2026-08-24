@@ -1,0 +1,78 @@
+name: SEO local Curitiba
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  seo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Aplicar SEO local
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+
+          p = Path("index.html")
+          text = p.read_text(encoding="utf-8")
+
+          # Mantém a página única, mas fornece sinais claros de SEO local.
+          replacements = {
+              '<title>JM Elétrica e Construções</title>': '<title>JM Elétrica e Construções | Eletricista e Reformas em Curitiba</title>',
+              '<meta name="description" content="JM Elétrica e Construções — serviços elétricos, reformas, manutenção, segurança e carregadores para veículos elétricos.">': '<meta name="description" content="JM Elétrica e Construções em Curitiba e região: serviços elétricos, manutenção, reformas, construção e instalação de carregadores para veículos elétricos.">',
+          }
+          for old, new in replacements.items():
+              text = text.replace(old, new, 1)
+
+          if 'id="local-seo"' not in text:
+              marker = '<section id="sobre">'
+              seo_section = '''<section id="local-seo" aria-label="Atendimento em Curitiba e região"><div class="container"><div class="head"><div class="kicker">Atendimento regional</div><h2>Serviços em Curitiba e região</h2><p>A JM Elétrica e Construções atende Curitiba e cidades próximas, oferecendo serviços elétricos, manutenção, reformas e construção conforme a necessidade de cada projeto.</p></div><div class="note">Atendimento sujeito à disponibilidade e à área de deslocamento para cada serviço.</div></div></section>'''
+              if marker in text:
+                  text = text.replace(marker, seo_section + marker, 1)
+
+          if 'application/ld+json' not in text:
+              marker = '</head>'
+              schema = '''<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "JM Elétrica e Construções",
+  "url": "https://johnycristiansan-oss.github.io/jm-eletrica-e-contrucoes/",
+  "logo": "https://johnycristiansan-oss.github.io/jm-eletrica-e-contrucoes/jm.png?v=2",
+  "description": "Serviços elétricos, manutenção, reformas, construção e instalação de carregadores para veículos elétricos em Curitiba e região.",
+  "areaServed": [
+    {"@type":"City","name":"Curitiba","addressCountry":"BR"},
+    {"@type":"AdministrativeArea","name":"Região Metropolitana de Curitiba","addressCountry":"BR"}
+  ],
+  "sameAs": [
+    "https://www.youtube.com/@mike79645"
+  ]
+}
+</script>'''
+              text = text.replace(marker, schema + '\n' + marker, 1)
+
+          if '<link rel="canonical"' not in text:
+              text = text.replace('<meta name="viewport" content="width=device-width,initial-scale=1">', '<meta name="viewport" content="width=device-width,initial-scale=1">\n<link rel="canonical" href="https://johnycristiansan-oss.github.io/jm-eletrica-e-contrucoes/">', 1)
+
+          p.write_text(text, encoding="utf-8")
+
+      - name: Commitar alterações de SEO
+        run: |
+          if git diff --quiet; then
+            echo "SEO já está atualizado."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "Otimiza SEO local para Curitiba e região"
+          git push
